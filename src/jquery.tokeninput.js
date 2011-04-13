@@ -24,6 +24,7 @@ var DEFAULT_SETTINGS = {
     queryParam: "q",
     tokenDelimiter: ",",
     preventDuplicates: false,
+    addNewTokens: false,
     prePopulate: null,
     animateDropdown: true,
     onResult: null,
@@ -322,8 +323,13 @@ $.TokenList = function (input, url_or_data, settings) {
     // Private functions
     //
 
-    function resize_input() {
-        if(input_val === (input_val = input_box.val())) {return;}
+    function resize_input(e) {
+        if(settings.addNewTokens && e.type === "keyup" && e.keyCode === 13){
+            insert_token(input_val.replace(/\s+/gi, ""),input_val.replace(/\s+/gi, ""))
+            input_box.val("")
+            return;
+        }
+        if(input_val === (input_val = input_box.val())) { return; }
 
         // Enter new content into resizer and resize input accordingly
         var escaped = input_val.replace(/&/g, '&amp;').replace(/\s/g,' ').replace(/</g, '&lt;').replace(/>/g, '&gt;');
